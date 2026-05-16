@@ -1,5 +1,7 @@
 package dev.bertan.order_service.controller;
 
+import dev.bertan.order_service.dto.CreateOrderRequest;
+import dev.bertan.order_service.dto.UpdateOrderRequest;
 import dev.bertan.order_service.entity.Order;
 import dev.bertan.order_service.service.OrderService;
 import jakarta.validation.Valid;
@@ -26,8 +28,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> create(@Valid @RequestBody Order order) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(order));
+    public ResponseEntity<Order> create(@Valid @RequestBody CreateOrderRequest req) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(req));
     }
 
     @GetMapping
@@ -41,8 +43,8 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public Order update(@PathVariable Long id, @Valid @RequestBody Order order) {
-        return service.update(id, order);
+    public Order update(@PathVariable Long id, @Valid @RequestBody UpdateOrderRequest req) {
+        return service.update(id, req);
     }
 
     @DeleteMapping("/{id}")

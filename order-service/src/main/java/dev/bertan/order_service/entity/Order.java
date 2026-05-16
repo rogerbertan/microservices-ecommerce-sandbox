@@ -32,23 +32,36 @@ public class Order {
 
     private LocalDateTime createdAt;
 
+    protected Order() {}
+
+    private Order(String customerName, BigDecimal totalAmount, String status) {
+        this.customerName = customerName;
+        this.totalAmount = totalAmount;
+        this.status = status;
+    }
+
+    public static Order create(String customerName, BigDecimal totalAmount, String status) {
+        return new Order(customerName, totalAmount, status);
+    }
+
+    public void update(String customerName, BigDecimal totalAmount, String status) {
+        this.customerName = customerName;
+        this.totalAmount = totalAmount;
+        this.status = status;
+    }
+
     @PrePersist
     void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
     public String getCustomerName() { return customerName; }
-    public void setCustomerName(String customerName) { this.customerName = customerName; }
 
     public BigDecimal getTotalAmount() { return totalAmount; }
-    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
 
     public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

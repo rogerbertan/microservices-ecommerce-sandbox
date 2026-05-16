@@ -1,5 +1,7 @@
 package dev.bertan.order_service.service;
 
+import dev.bertan.order_service.dto.CreateOrderRequest;
+import dev.bertan.order_service.dto.UpdateOrderRequest;
 import dev.bertan.order_service.entity.Order;
 import dev.bertan.order_service.repository.OrderRepository;
 import java.util.List;
@@ -16,9 +18,8 @@ public class OrderService {
         this.repository = repository;
     }
 
-    public Order create(Order order) {
-        order.setId(null);
-        return repository.save(order);
+    public Order create(CreateOrderRequest req) {
+        return repository.save(Order.create(req.customerName(), req.totalAmount(), req.status()));
     }
 
     public List<Order> findAll() {
@@ -30,11 +31,9 @@ public class OrderService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public Order update(Long id, Order updated) {
+    public Order update(Long id, UpdateOrderRequest req) {
         Order existing = findById(id);
-        existing.setCustomerName(updated.getCustomerName());
-        existing.setTotalAmount(updated.getTotalAmount());
-        existing.setStatus(updated.getStatus());
+        existing.update(req.customerName(), req.totalAmount(), req.status());
         return repository.save(existing);
     }
 
