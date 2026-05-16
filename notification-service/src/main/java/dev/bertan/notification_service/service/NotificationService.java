@@ -1,5 +1,7 @@
 package dev.bertan.notification_service.service;
 
+import dev.bertan.notification_service.dto.CreateNotificationRequest;
+import dev.bertan.notification_service.dto.UpdateNotificationRequest;
 import dev.bertan.notification_service.entity.Notification;
 import dev.bertan.notification_service.repository.NotificationRepository;
 import java.util.List;
@@ -16,9 +18,8 @@ public class NotificationService {
         this.repository = repository;
     }
 
-    public Notification create(Notification notification) {
-        notification.setId(null);
-        return repository.save(notification);
+    public Notification create(CreateNotificationRequest req) {
+        return repository.save(Notification.create(req.message(), req.type(), req.recipient()));
     }
 
     public List<Notification> findAll() {
@@ -30,11 +31,9 @@ public class NotificationService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public Notification update(Long id, Notification updated) {
+    public Notification update(Long id, UpdateNotificationRequest req) {
         Notification existing = findById(id);
-        existing.setMessage(updated.getMessage());
-        existing.setType(updated.getType());
-        existing.setRecipient(updated.getRecipient());
+        existing.update(req.message(), req.type(), req.recipient());
         return repository.save(existing);
     }
 

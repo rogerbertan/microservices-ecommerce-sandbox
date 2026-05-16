@@ -26,23 +26,36 @@ public class Notification {
 
     private LocalDateTime sentAt;
 
+    protected Notification() {}
+
+    private Notification(String message, String type, String recipient) {
+        this.message = message;
+        this.type = type;
+        this.recipient = recipient;
+    }
+
+    public static Notification create(String message, String type, String recipient) {
+        return new Notification(message, type, recipient);
+    }
+
+    public void update(String message, String type, String recipient) {
+        this.message = message;
+        this.type = type;
+        this.recipient = recipient;
+    }
+
     @PrePersist
     void onCreate() {
         this.sentAt = LocalDateTime.now();
     }
 
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
     public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
 
     public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
 
     public String getRecipient() { return recipient; }
-    public void setRecipient(String recipient) { this.recipient = recipient; }
 
     public LocalDateTime getSentAt() { return sentAt; }
-    public void setSentAt(LocalDateTime sentAt) { this.sentAt = sentAt; }
 }
