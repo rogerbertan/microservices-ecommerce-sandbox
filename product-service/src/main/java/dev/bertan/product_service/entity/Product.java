@@ -33,6 +33,19 @@ public class Product {
 
     private LocalDateTime createdAt;
 
+    protected Product() {}
+
+    private Product(String name, String description, BigDecimal price, Integer quantity) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public static Product create(String name, String description, BigDecimal price, Integer quantity) {
+        return new Product(name, description, price, quantity);
+    }
+
     @PrePersist
     void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -47,19 +60,14 @@ public class Product {
     }
 
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
     public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
 
     public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
 
     public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
 
     public Integer getQuantity() { return quantity; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

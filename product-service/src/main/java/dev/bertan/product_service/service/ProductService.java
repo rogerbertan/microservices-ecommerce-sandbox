@@ -1,13 +1,11 @@
 package dev.bertan.product_service.service;
 
+import dev.bertan.product_service.dto.CreateProductRequest;
 import dev.bertan.product_service.entity.Product;
 import dev.bertan.product_service.repository.ProductRepository;
 import java.util.List;
-
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -19,9 +17,8 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public Product create(Product product) {
-        product.setId(null);
-        return repository.save(product);
+    public Product create(CreateProductRequest req) {
+        return repository.save(Product.create(req.name(), req.description(), req.price(), req.quantity()));
     }
 
     public List<Product> findAll() {

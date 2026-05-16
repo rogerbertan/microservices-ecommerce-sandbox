@@ -1,5 +1,6 @@
 package dev.bertan.product_service.controller;
 
+import dev.bertan.product_service.dto.CreateProductRequest;
 import dev.bertan.product_service.entity.Product;
 import dev.bertan.product_service.service.ProductService;
 import jakarta.validation.Valid;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +27,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@Valid @RequestBody Product product) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(product));
+    public ResponseEntity<Product> create(@Valid @RequestBody CreateProductRequest req) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(req));
     }
 
     @GetMapping
