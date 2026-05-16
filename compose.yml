@@ -1,0 +1,13 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - postgres_data_ms_ecommerce:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+volumes:
+  postgres_data_ms_ecommerce:
