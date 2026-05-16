@@ -27,11 +27,23 @@ public class Product {
     @Positive
     private BigDecimal price;
 
+    @NotNull
+    @Positive
+    private Integer quantity;
+
     private LocalDateTime createdAt;
 
     @PrePersist
     void onCreate() {
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void consumeQuantity(@Positive Integer quantity) {
+        this.quantity -= quantity;
+    }
+
+    public void addQuantity(@Positive Integer quantity) {
+        this.quantity += quantity;
     }
 
     public Long getId() { return id; }
@@ -45,6 +57,8 @@ public class Product {
 
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
+
+    public Integer getQuantity() { return quantity; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

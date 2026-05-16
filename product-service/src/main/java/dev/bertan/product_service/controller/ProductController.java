@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,9 +41,14 @@ public class ProductController {
         return service.findById(id);
     }
 
-    @PutMapping("/{id}")
-    public Product update(@PathVariable Long id, @Valid @RequestBody Product product) {
-        return service.update(id, product);
+    @PatchMapping("/{id}/consume")
+    public Product consume(@PathVariable Long id, @RequestBody Integer quantity) {
+        return service.consume(id, quantity);
+    }
+
+    @PatchMapping("/{id}/add")
+    public Product add(@PathVariable Long id, @RequestBody Integer quantity) {
+        return service.add(id, quantity);
     }
 
     @DeleteMapping("/{id}")

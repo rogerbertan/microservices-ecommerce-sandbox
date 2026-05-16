@@ -3,8 +3,11 @@ package dev.bertan.product_service.service;
 import dev.bertan.product_service.entity.Product;
 import dev.bertan.product_service.repository.ProductRepository;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -30,12 +33,16 @@ public class ProductService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public Product update(Long id, Product updated) {
-        Product existing = findById(id);
-        existing.setName(updated.getName());
-        existing.setDescription(updated.getDescription());
-        existing.setPrice(updated.getPrice());
-        return repository.save(existing);
+    public Product consume(Long id, Integer quantity) {
+        Product product = findById(id);
+        product.consumeQuantity(quantity);
+        return repository.save(product);
+    }
+
+    public Product add(Long id, Integer quantity) {
+        Product product = findById(id);
+        product.addQuantity(quantity);
+        return repository.save(product);
     }
 
     public void delete(Long id) {
