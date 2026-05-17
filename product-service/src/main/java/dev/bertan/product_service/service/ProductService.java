@@ -23,17 +23,19 @@ public class ProductService {
     }
 
     public List<ProductResponse> findAll() {
-        return repository.findAll().stream().map(ProductResponse::from).toList();
+        return repository.findAll().stream()
+                .map(ProductResponse::from)
+                .toList();
     }
 
     public ProductResponse findById(Long id) {
         return ProductResponse.from(findProductById(id));
     }
 
-    public ProductResponse consume(Long id, Integer quantity) {
+    public void consume(Long id, Integer quantity) {
         Product product = findProductById(id);
         product.consumeQuantity(quantity);
-        return ProductResponse.from(repository.save(product));
+        ProductResponse.from(repository.save(product));
     }
 
     public ProductResponse add(Long id, Integer quantity) {

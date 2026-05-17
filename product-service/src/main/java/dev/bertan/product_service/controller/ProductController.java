@@ -42,8 +42,8 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}/consume")
-    public ProductResponse consume(@PathVariable Long id, @RequestBody Integer quantity) {
-        return service.consume(id, quantity);
+    public void consume(@PathVariable Long id, @RequestBody Integer quantity) {
+        service.consume(id, quantity);
     }
 
     @PatchMapping("/{id}/add")
