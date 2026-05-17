@@ -1,7 +1,7 @@
 package dev.bertan.product_service.controller;
 
 import dev.bertan.product_service.dto.CreateProductRequest;
-import dev.bertan.product_service.entity.Product;
+import dev.bertan.product_service.dto.ProductResponse;
 import dev.bertan.product_service.service.ProductService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -27,27 +27,27 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@Valid @RequestBody CreateProductRequest req) {
+    public ResponseEntity<ProductResponse> create(@Valid @RequestBody CreateProductRequest req) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(req));
     }
 
     @GetMapping
-    public List<Product> findAll() {
+    public List<ProductResponse> findAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Product findById(@PathVariable Long id) {
+    public ProductResponse findById(@PathVariable Long id) {
         return service.findById(id);
     }
 
     @PatchMapping("/{id}/consume")
-    public Product consume(@PathVariable Long id, @RequestBody Integer quantity) {
+    public ProductResponse consume(@PathVariable Long id, @RequestBody Integer quantity) {
         return service.consume(id, quantity);
     }
 
     @PatchMapping("/{id}/add")
-    public Product add(@PathVariable Long id, @RequestBody Integer quantity) {
+    public ProductResponse add(@PathVariable Long id, @RequestBody Integer quantity) {
         return service.add(id, quantity);
     }
 
