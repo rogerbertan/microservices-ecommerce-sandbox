@@ -1,8 +1,8 @@
 package dev.bertan.order_service.controller;
 
 import dev.bertan.order_service.dto.CreateOrderRequest;
+import dev.bertan.order_service.dto.OrderResponse;
 import dev.bertan.order_service.dto.UpdateOrderRequest;
-import dev.bertan.order_service.entity.Order;
 import dev.bertan.order_service.service.OrderService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -28,22 +28,22 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> create(@Valid @RequestBody CreateOrderRequest req) {
+    public ResponseEntity<OrderResponse> create(@Valid @RequestBody CreateOrderRequest req) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(req));
     }
 
     @GetMapping
-    public List<Order> findAll() {
+    public List<OrderResponse> findAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Order findById(@PathVariable Long id) {
+    public OrderResponse findById(@PathVariable Long id) {
         return service.findById(id);
     }
 
     @PutMapping("/{id}")
-    public Order update(@PathVariable Long id, @Valid @RequestBody UpdateOrderRequest req) {
+    public OrderResponse update(@PathVariable Long id, @Valid @RequestBody UpdateOrderRequest req) {
         return service.update(id, req);
     }
 
