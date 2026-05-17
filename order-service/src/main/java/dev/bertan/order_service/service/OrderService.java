@@ -23,11 +23,16 @@ public class OrderService {
     }
 
     public OrderResponse create(CreateOrderRequest req) {
-        return OrderResponse.from(repository.save(Order.create(req.customerName(), req.totalAmount(), req.status())));
+        Order savedOrder = Order.create(req.customerName(), req.totalAmount(), req.status());
+        productClient.consume(req.productId(), req.productQuantity());
+
+        return OrderResponse.from(repository.save(savedOrder));
     }
 
     public List<OrderResponse> findAll() {
-        return repository.findAll().stream().map(OrderResponse::from).toList();
+        return repository.findAll().stream()
+                .map(OrderResponse::from)
+                .toList();
     }
 
     public OrderResponse findById(Long id) {

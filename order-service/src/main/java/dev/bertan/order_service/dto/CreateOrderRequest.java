@@ -8,5 +8,7 @@ import java.math.BigDecimal;
 public record CreateOrderRequest(
     @NotBlank String customerName,
     @NotNull @Positive BigDecimal totalAmount,
-    @NotBlank String status
+    @NotBlank String status,
+    @NotNull Long productId,
+    @NotNull Integer productQuantity
 ) {}

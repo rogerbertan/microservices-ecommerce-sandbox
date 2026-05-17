@@ -11,6 +11,11 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  cloud:
+    openfeign:
+      httpclient:
+        hc5:
+          enabled: true
 
 feign:
   client:
