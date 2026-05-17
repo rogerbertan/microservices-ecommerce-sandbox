@@ -1,0 +1,175 @@
+{
+  "info": {
+    "name": "Ecommerce Microservices",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "product_url",      "value": "http://localhost:8081" },
+    { "key": "order_url",        "value": "http://localhost:8082" },
+    { "key": "notification_url", "value": "http://localhost:8083" }
+  ],
+  "item": [
+    {
+      "name": "Product Service",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{product_url}}/products", "host": ["{{product_url}}"], "path": ["products"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Notebook\",\n  \"description\": \"High-performance laptop\",\n  \"price\": 4999.99,\n  \"quantity\": 10\n}"
+            }
+          }
+        },
+        {
+          "name": "Find All Products",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{product_url}}/products", "host": ["{{product_url}}"], "path": ["products"] }
+          }
+        },
+        {
+          "name": "Find Product By Id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{product_url}}/products/1", "host": ["{{product_url}}"], "path": ["products", "1"] }
+          }
+        },
+        {
+          "name": "Consume Product Stock",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{product_url}}/products/1/consume", "host": ["{{product_url}}"], "path": ["products", "1", "consume"] },
+            "body": {
+              "mode": "raw",
+              "raw": "2"
+            }
+          }
+        },
+        {
+          "name": "Add Product Stock",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{product_url}}/products/1/add", "host": ["{{product_url}}"], "path": ["products", "1", "add"] },
+            "body": {
+              "mode": "raw",
+              "raw": "5"
+            }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{product_url}}/products/1", "host": ["{{product_url}}"], "path": ["products", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Order Service",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{order_url}}/orders", "host": ["{{order_url}}"], "path": ["orders"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerName\": \"John Doe\",\n  \"totalAmount\": 4999.99,\n  \"status\": \"PENDING\",\n  \"productId\": 1,\n  \"productQuantity\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "Find All Orders",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{order_url}}/orders", "host": ["{{order_url}}"], "path": ["orders"] }
+          }
+        },
+        {
+          "name": "Find Order By Id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{order_url}}/orders/1", "host": ["{{order_url}}"], "path": ["orders", "1"] }
+          }
+        },
+        {
+          "name": "Update Order",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{order_url}}/orders/1", "host": ["{{order_url}}"], "path": ["orders", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerName\": \"John Doe\",\n  \"totalAmount\": 4999.99,\n  \"status\": \"CONFIRMED\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Order",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{order_url}}/orders/1", "host": ["{{order_url}}"], "path": ["orders", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notification Service",
+      "item": [
+        {
+          "name": "Create Notification",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{notification_url}}/notifications", "host": ["{{notification_url}}"], "path": ["notifications"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Your order has been confirmed\",\n  \"type\": \"EMAIL\",\n  \"recipient\": \"john.doe@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Find All Notifications",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{notification_url}}/notifications", "host": ["{{notification_url}}"], "path": ["notifications"] }
+          }
+        },
+        {
+          "name": "Find Notification By Id",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{notification_url}}/notifications/1", "host": ["{{notification_url}}"], "path": ["notifications", "1"] }
+          }
+        },
+        {
+          "name": "Update Notification",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{notification_url}}/notifications/1", "host": ["{{notification_url}}"], "path": ["notifications", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Your order has been shipped\",\n  \"type\": \"EMAIL\",\n  \"recipient\": \"john.doe@example.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Notification",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{notification_url}}/notifications/1", "host": ["{{notification_url}}"], "path": ["notifications", "1"] }
+          }
+        }
+      ]
+    }
+  ]
+}
