@@ -24,7 +24,9 @@ public class NotificationService {
     }
 
     public List<NotificationResponse> findAll() {
-        return repository.findAll().stream().map(NotificationResponse::from).toList();
+        return repository.findAll().stream()
+                .map(NotificationResponse::from)
+                .toList();
     }
 
     public NotificationResponse findById(Long id) {
