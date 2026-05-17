@@ -1,6 +1,7 @@
 package dev.bertan.notification_service.service;
 
 import dev.bertan.notification_service.dto.CreateNotificationRequest;
+import dev.bertan.notification_service.dto.NotificationResponse;
 import dev.bertan.notification_service.dto.UpdateNotificationRequest;
 import dev.bertan.notification_service.entity.Notification;
 import dev.bertan.notification_service.repository.NotificationRepository;
@@ -18,23 +19,22 @@ public class NotificationService {
         this.repository = repository;
     }
 
-    public Notification create(CreateNotificationRequest req) {
-        return repository.save(Notification.create(req.message(), req.type(), req.recipient()));
+    public NotificationResponse create(CreateNotificationRequest req) {
+        return NotificationResponse.from(repository.save(Notification.create(req.message(), req.type(), req.recipient())));
     }
 
-    public List<Notification> findAll() {
-        return repository.findAll();
+    public List<NotificationResponse> findAll() {
+        return repository.findAll().stream().map(NotificationResponse::from).toList();
     }
 
-    public Notification findById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public NotificationResponse findById(Long id) {
+        return NotificationResponse.from(findNotificationById(id));
     }
 
-    public Notification update(Long id, UpdateNotificationRequest req) {
-        Notification existing = findById(id);
+    public NotificationResponse update(Long id, UpdateNotificationRequest req) {
+        Notification existing = findNotificationById(id);
         existing.update(req.message(), req.type(), req.recipient());
-        return repository.save(existing);
+        return NotificationResponse.from(repository.save(existing));
     }
 
     public void delete(Long id) {
@@ -42,5 +42,10 @@ public class NotificationService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         repository.deleteById(id);
+    }
+
+    private Notification findNotificationById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }

@@ -1,8 +1,8 @@
 package dev.bertan.notification_service.controller;
 
 import dev.bertan.notification_service.dto.CreateNotificationRequest;
+import dev.bertan.notification_service.dto.NotificationResponse;
 import dev.bertan.notification_service.dto.UpdateNotificationRequest;
-import dev.bertan.notification_service.entity.Notification;
 import dev.bertan.notification_service.service.NotificationService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -28,22 +28,22 @@ public class NotificationController {
     }
 
     @PostMapping
-    public ResponseEntity<Notification> create(@Valid @RequestBody CreateNotificationRequest req) {
+    public ResponseEntity<NotificationResponse> create(@Valid @RequestBody CreateNotificationRequest req) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(req));
     }
 
     @GetMapping
-    public List<Notification> findAll() {
+    public List<NotificationResponse> findAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Notification findById(@PathVariable Long id) {
+    public NotificationResponse findById(@PathVariable Long id) {
         return service.findById(id);
     }
 
     @PutMapping("/{id}")
-    public Notification update(@PathVariable Long id, @Valid @RequestBody UpdateNotificationRequest req) {
+    public NotificationResponse update(@PathVariable Long id, @Valid @RequestBody UpdateNotificationRequest req) {
         return service.update(id, req);
     }
 
