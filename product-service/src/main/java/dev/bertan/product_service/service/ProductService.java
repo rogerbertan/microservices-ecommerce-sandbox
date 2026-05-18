@@ -4,6 +4,8 @@ import dev.bertan.product_service.dto.CreateProductRequest;
 import dev.bertan.product_service.dto.ProductResponse;
 import dev.bertan.product_service.entity.Product;
 import dev.bertan.product_service.repository.ProductRepository;
+
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,11 @@ public class ProductService {
         Product product = findProductById(id);
         product.addQuantity(quantity);
         return ProductResponse.from(repository.save(product));
+    }
+
+    public BigDecimal getPrice(Long id) {
+        Product product = findProductById(id);
+        return product.getPrice();
     }
 
     public void delete(Long id) {

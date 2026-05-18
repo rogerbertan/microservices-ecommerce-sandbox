@@ -4,6 +4,8 @@ import dev.bertan.product_service.dto.CreateProductRequest;
 import dev.bertan.product_service.dto.ProductResponse;
 import dev.bertan.product_service.service.ProductService;
 import jakarta.validation.Valid;
+
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +51,11 @@ public class ProductController {
     @PatchMapping("/{id}/add")
     public ProductResponse add(@PathVariable Long id, @RequestBody Integer quantity) {
         return service.add(id, quantity);
+    }
+
+    @GetMapping("/{id}/price")
+    public BigDecimal getPrice(@PathVariable Long id) {
+        return service.getPrice(id);
     }
 
     @DeleteMapping("/{id}")
