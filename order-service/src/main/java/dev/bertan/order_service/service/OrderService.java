@@ -25,8 +25,7 @@ public class OrderService {
     }
 
     public OrderResponse create(CreateOrderRequest req) {
-        BigDecimal productPrice = productClient.getPrice(req.productId());
-        BigDecimal totalAmount = Order.calculateTotalAmount(req.productQuantity(), productPrice);
+        BigDecimal totalAmount = calculateTotalAmount(req.productQuantity(), req.productId());
         Order savedOrder = Order.create(req.customerName(), totalAmount, req.status());
         productClient.consume(req.productId(), req.productQuantity());
 
@@ -59,5 +58,10 @@ public class OrderService {
     private Order findOrderById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    private BigDecimal calculateTotalAmount(Integer quantity, Long productId) {
+        BigDecimal productPrice = productClient.getPrice(productId);
+        return productPrice.multiply(BigDecimal.valueOf(quantity));
     }
 }
