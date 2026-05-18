@@ -55,6 +55,10 @@ public class Order {
         this.createdAt = LocalDateTime.now();
     }
 
+    public static BigDecimal calculateTotalAmount(Integer quantity, BigDecimal price) {
+        return price.multiply(BigDecimal.valueOf(quantity));
+    }
+
     public Long getId() { return id; }
 
     public String getCustomerName() { return customerName; }

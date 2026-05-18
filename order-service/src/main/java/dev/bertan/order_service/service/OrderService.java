@@ -6,6 +6,8 @@ import dev.bertan.order_service.dto.OrderResponse;
 import dev.bertan.order_service.dto.UpdateOrderRequest;
 import dev.bertan.order_service.entity.Order;
 import dev.bertan.order_service.repository.OrderRepository;
+
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,9 @@ public class OrderService {
     }
 
     public OrderResponse create(CreateOrderRequest req) {
-        Order savedOrder = Order.create(req.customerName(), req.totalAmount(), req.status());
+        BigDecimal productPrice = productClient.getPrice(req.productId());
+        BigDecimal totalAmount = Order.calculateTotalAmount(req.productQuantity(), productPrice);
+        Order savedOrder = Order.create(req.customerName(), totalAmount, req.status());
         productClient.consume(req.productId(), req.productQuantity());
 
         return OrderResponse.from(repository.save(savedOrder));
