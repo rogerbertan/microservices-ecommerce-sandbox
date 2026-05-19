@@ -20,7 +20,7 @@
             "url": { "raw": "{{product_url}}/products", "host": ["{{product_url}}"], "path": ["products"] },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Notebook\",\n  \"description\": \"High-performance laptop\",\n  \"price\": 4999.99,\n  \"quantity\": 10\n}"
+              "raw": "{\n  \"name\": \"Notebook\",\n  \"description\": \"High-performance laptop\",\n  \"price\": 4999.99,\n  \"quantity\": 10,\n  \"minThreshold\": 2\n}"
             }
           }
         },
@@ -63,6 +63,13 @@
           }
         },
         {
+          "name": "Get Product Price",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{product_url}}/products/1/price", "host": ["{{product_url}}"], "path": ["products", "1", "price"] }
+          }
+        },
+        {
           "name": "Delete Product",
           "request": {
             "method": "DELETE",
@@ -82,7 +89,7 @@
             "url": { "raw": "{{order_url}}/orders", "host": ["{{order_url}}"], "path": ["orders"] },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"customerName\": \"John Doe\",\n  \"totalAmount\": 4999.99,\n  \"status\": \"PENDING\",\n  \"productId\": 1,\n  \"productQuantity\": 2\n}"
+              "raw": "{\n  \"customerName\": \"John Doe\",\n  \"status\": \"PENDING\",\n  \"productId\": 1,\n  \"productQuantity\": 2\n}"
             }
           }
         },
