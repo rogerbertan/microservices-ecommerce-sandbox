@@ -1,7 +1,7 @@
 package dev.bertan.product_service.controller;
 
-import dev.bertan.product_service.dto.CreateProductRequest;
-import dev.bertan.product_service.dto.ProductResponse;
+import dev.bertan.product_service.dto.product.CreateProductRequest;
+import dev.bertan.product_service.dto.product.ProductResponse;
 import dev.bertan.product_service.service.ProductService;
 import jakarta.validation.Valid;
 

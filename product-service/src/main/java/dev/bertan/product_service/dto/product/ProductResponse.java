@@ -1,4 +1,4 @@
-package dev.bertan.product_service.dto;
+package dev.bertan.product_service.dto.product;
 
 import dev.bertan.product_service.entity.Product;
 import java.math.BigDecimal;
