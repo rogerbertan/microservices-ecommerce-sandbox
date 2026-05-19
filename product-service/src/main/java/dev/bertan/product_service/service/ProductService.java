@@ -1,7 +1,9 @@
 package dev.bertan.product_service.service;
 
-import dev.bertan.product_service.dto.CreateProductRequest;
-import dev.bertan.product_service.dto.ProductResponse;
+import dev.bertan.product_service.client.NotificationClient;
+import dev.bertan.product_service.dto.notification.CreateNotificationRequest;
+import dev.bertan.product_service.dto.product.CreateProductRequest;
+import dev.bertan.product_service.dto.product.ProductResponse;
 import dev.bertan.product_service.entity.Product;
 import dev.bertan.product_service.repository.ProductRepository;
 
@@ -15,13 +17,16 @@ import org.springframework.web.server.ResponseStatusException;
 public class ProductService {
 
     private final ProductRepository repository;
+    private final NotificationClient notificationClient;
 
-    public ProductService(ProductRepository repository) {
+    public ProductService(ProductRepository repository,
+                          NotificationClient notificationClient) {
         this.repository = repository;
+        this.notificationClient = notificationClient;
     }
 
     public ProductResponse create(CreateProductRequest req) {
-        return ProductResponse.from(repository.save(Product.create(req.name(), req.description(), req.price(), req.quantity())));
+        return ProductResponse.from(repository.save(Product.create(req.name(), req.description(), req.price(), req.quantity(), req.minThreshold())));
     }
 
     public List<ProductResponse> findAll() {
@@ -36,6 +41,16 @@ public class ProductService {
 
     public void consume(Long id, Integer quantity) {
         Product product = findProductById(id);
+        if (quantity > product.getQuantity()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough quantity available");
+        }
+        if (product.getQuantity() - quantity < product.getMinThreshold()) {
+            CreateNotificationRequest notification = new CreateNotificationRequest(
+                    "Product " + product.getName() + " is below minimum threshold",
+                    "Product",
+                    "abacaxi@email.com");
+            notificationClient.create(notification);
+        }
         product.consumeQuantity(quantity);
         ProductResponse.from(repository.save(product));
     }
