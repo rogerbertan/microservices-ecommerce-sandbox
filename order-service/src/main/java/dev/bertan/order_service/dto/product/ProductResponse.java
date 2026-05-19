@@ -1,4 +1,4 @@
-package dev.bertan.order_service.dto;
+package dev.bertan.order_service.dto.product;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

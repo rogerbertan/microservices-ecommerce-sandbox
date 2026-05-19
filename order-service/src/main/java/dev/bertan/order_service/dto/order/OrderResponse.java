@@ -1,4 +1,4 @@
-package dev.bertan.order_service.dto;
+package dev.bertan.order_service.dto.order;
 
 import dev.bertan.order_service.entity.Order;
 import java.math.BigDecimal;

@@ -1,4 +1,4 @@
-package dev.bertan.order_service.dto;
+package dev.bertan.order_service.dto.order;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

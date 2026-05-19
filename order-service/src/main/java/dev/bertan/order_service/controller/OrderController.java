@@ -1,8 +1,8 @@
 package dev.bertan.order_service.controller;
 
-import dev.bertan.order_service.dto.CreateOrderRequest;
-import dev.bertan.order_service.dto.OrderResponse;
-import dev.bertan.order_service.dto.UpdateOrderRequest;
+import dev.bertan.order_service.dto.order.CreateOrderRequest;
+import dev.bertan.order_service.dto.order.OrderResponse;
+import dev.bertan.order_service.dto.order.UpdateOrderRequest;
 import dev.bertan.order_service.service.OrderService;
 import jakarta.validation.Valid;
 import java.util.List;
