@@ -1,9 +1,11 @@
 package dev.bertan.order_service.service;
 
+import dev.bertan.order_service.client.NotificationClient;
 import dev.bertan.order_service.client.ProductClient;
-import dev.bertan.order_service.dto.CreateOrderRequest;
-import dev.bertan.order_service.dto.OrderResponse;
-import dev.bertan.order_service.dto.UpdateOrderRequest;
+import dev.bertan.order_service.dto.notification.CreateNotificationRequest;
+import dev.bertan.order_service.dto.order.CreateOrderRequest;
+import dev.bertan.order_service.dto.order.OrderResponse;
+import dev.bertan.order_service.dto.order.UpdateOrderRequest;
 import dev.bertan.order_service.entity.Order;
 import dev.bertan.order_service.repository.OrderRepository;
 
@@ -18,18 +20,29 @@ public class OrderService {
 
     private final OrderRepository repository;
     private final ProductClient productClient;
+    private final NotificationClient notificationClient;
 
-    public OrderService(OrderRepository repository, ProductClient productClient) {
+    public OrderService(OrderRepository repository,
+                        ProductClient productClient,
+                        NotificationClient notificationClient) {
         this.repository = repository;
         this.productClient = productClient;
+        this.notificationClient = notificationClient;
     }
 
     public OrderResponse create(CreateOrderRequest req) {
         BigDecimal totalAmount = calculateTotalAmount(req.productQuantity(), req.productId());
-        Order savedOrder = Order.create(req.customerName(), totalAmount, req.status());
+        Order order = Order.create(req.customerName(), totalAmount, req.status());
         productClient.consume(req.productId(), req.productQuantity());
+        Order savedOrder = repository.save(order);
+        CreateNotificationRequest notification = new CreateNotificationRequest(
+                "New order created: " + savedOrder.getId(),
+                "Order",
+                "batatinha@email.com"
+        );
+        notificationClient.create(notification);
 
-        return OrderResponse.from(repository.save(savedOrder));
+        return OrderResponse.from(savedOrder);
     }
 
     public List<OrderResponse> findAll() {
