@@ -10,6 +10,7 @@ public record ProductResponse(
     String description,
     BigDecimal price,
     Integer quantity,
+    Integer minThreshold,
     LocalDateTime createdAt
 ) {
     public static ProductResponse from(Product product) {
@@ -19,6 +20,7 @@ public record ProductResponse(
             product.getDescription(),
             product.getPrice(),
             product.getQuantity(),
+            product.getMinThreshold(),
             product.getCreatedAt()
         );
     }

@@ -35,6 +35,7 @@ public class Product {
         this.description = description;
         this.price = price;
         this.quantity = quantity;
+        this.minThreshold = minThreshold;
     }
 
     public static Product create(String name, String description, BigDecimal price, Integer quantity, Integer minThreshold) {
