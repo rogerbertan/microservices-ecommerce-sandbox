@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,6 +34,7 @@ public class OrderService {
     }
 
     @CircuitBreaker(name = "orderService", fallbackMethod = "createOrderFallback")
+    @Retry(name = "orderService")
     public OrderResponse create(CreateOrderRequest req) {
         BigDecimal totalAmount = calculateTotalAmount(req.productQuantity(), req.productId());
         Order order = Order.create(req.customerName(), totalAmount, req.status());
