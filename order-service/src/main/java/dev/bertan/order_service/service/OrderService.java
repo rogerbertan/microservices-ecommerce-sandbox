@@ -11,6 +11,8 @@ import dev.bertan.order_service.repository.OrderRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,6 +32,7 @@ public class OrderService {
         this.notificationClient = notificationClient;
     }
 
+    @CircuitBreaker(name = "orderService", fallbackMethod = "createOrderFallback")
     public OrderResponse create(CreateOrderRequest req) {
         BigDecimal totalAmount = calculateTotalAmount(req.productQuantity(), req.productId());
         Order order = Order.create(req.customerName(), totalAmount, req.status());
@@ -76,5 +79,9 @@ public class OrderService {
     private BigDecimal calculateTotalAmount(Integer quantity, Long productId) {
         BigDecimal productPrice = productClient.getPrice(productId);
         return productPrice.multiply(BigDecimal.valueOf(quantity));
+    }
+
+    private OrderResponse createOrderFallback(CreateOrderRequest req, Exception e) {
+        throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Product service is currently unavailable. Please try again later.");
     }
 }
