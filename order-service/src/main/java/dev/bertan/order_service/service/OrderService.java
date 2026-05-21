@@ -1,9 +1,9 @@
 package dev.bertan.order_service.service;
 
-import dev.bertan.order_service.client.NotificationClient;
 import dev.bertan.order_service.client.ProductClient;
 import dev.bertan.order_service.dto.notification.CreateNotificationRequest;
 import dev.bertan.order_service.dto.order.CreateOrderRequest;
+import dev.bertan.order_service.dto.order.OrderCreatedEvent;
 import dev.bertan.order_service.dto.order.OrderResponse;
 import dev.bertan.order_service.dto.order.UpdateOrderRequest;
 import dev.bertan.order_service.entity.Order;
@@ -23,14 +23,14 @@ public class OrderService {
 
     private final OrderRepository repository;
     private final ProductClient productClient;
-    private final NotificationClient notificationClient;
+    private final OrderEventProducer orderEventProducer;
 
     public OrderService(OrderRepository repository,
                         ProductClient productClient,
-                        NotificationClient notificationClient) {
+                        OrderEventProducer orderEventProducer) {
         this.repository = repository;
         this.productClient = productClient;
-        this.notificationClient = notificationClient;
+        this.orderEventProducer = orderEventProducer;
     }
 
     @CircuitBreaker(name = "orderService", fallbackMethod = "createOrderFallback")
@@ -45,7 +45,8 @@ public class OrderService {
                 "Order",
                 "batatinha@email.com"
         );
-        notificationClient.create(notification);
+        OrderCreatedEvent orderCreatedEvent = OrderCreatedEvent.from(savedOrder);
+        orderEventProducer.sendOrderCreated(orderCreatedEvent);
 
         return OrderResponse.from(savedOrder);
     }
