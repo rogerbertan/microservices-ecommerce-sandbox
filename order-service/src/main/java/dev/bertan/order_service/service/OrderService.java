@@ -84,7 +84,7 @@ public class OrderService {
         return productPrice.multiply(BigDecimal.valueOf(quantity));
     }
 
-    private OrderResponse createOrderFallback(CreateOrderRequest req, Exception e) {
+    private OrderResponse createOrderFallback() {
         throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Product service is currently unavailable. Please try again later.");
     }
 }
