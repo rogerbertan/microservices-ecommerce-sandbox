@@ -1,6 +1,6 @@
 package dev.bertan.notification_service.service;
 
-import dev.bertan.notification_service.dto.OrderCreatedEvent;
+import dev.bertan.notification_service.dto.order.OrderCreatedEvent;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import tools.jackson.core.JacksonException;

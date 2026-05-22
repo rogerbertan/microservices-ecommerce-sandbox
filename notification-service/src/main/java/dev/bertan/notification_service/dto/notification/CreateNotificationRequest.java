@@ -1,4 +1,4 @@
-package dev.bertan.notification_service.dto;
+package dev.bertan.notification_service.dto.notification;
 
 import jakarta.validation.constraints.NotBlank;
 

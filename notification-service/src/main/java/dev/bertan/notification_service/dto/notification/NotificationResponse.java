@@ -1,4 +1,4 @@
-package dev.bertan.notification_service.dto;
+package dev.bertan.notification_service.dto.notification;
 
 import dev.bertan.notification_service.entity.Notification;
 import java.time.LocalDateTime;

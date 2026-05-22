@@ -1,8 +1,8 @@
 package dev.bertan.notification_service.controller;
 
-import dev.bertan.notification_service.dto.CreateNotificationRequest;
-import dev.bertan.notification_service.dto.NotificationResponse;
-import dev.bertan.notification_service.dto.UpdateNotificationRequest;
+import dev.bertan.notification_service.dto.notification.CreateNotificationRequest;
+import dev.bertan.notification_service.dto.notification.NotificationResponse;
+import dev.bertan.notification_service.dto.notification.UpdateNotificationRequest;
 import dev.bertan.notification_service.service.NotificationService;
 import jakarta.validation.Valid;
 import java.util.List;
