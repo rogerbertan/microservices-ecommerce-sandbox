@@ -4,8 +4,10 @@ import dev.bertan.order_service.entity.Order;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record OrderCreatedEvent(
+        String eventId,
         Long id,
         String customerName,
         BigDecimal totalAmount,
@@ -14,6 +16,7 @@ public record OrderCreatedEvent(
 ) {
     public static OrderCreatedEvent from(Order order) {
         return new OrderCreatedEvent(
+                UUID.randomUUID().toString(),
                 order.getId(),
                 order.getCustomerName(),
                 order.getTotalAmount(),

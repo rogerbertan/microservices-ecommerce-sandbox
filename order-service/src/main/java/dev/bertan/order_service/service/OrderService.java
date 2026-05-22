@@ -15,6 +15,7 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -34,6 +35,7 @@ public class OrderService {
 
     @CircuitBreaker(name = "orderService", fallbackMethod = "createOrderFallback")
     @Retry(name = "orderService")
+    @Transactional
     public OrderResponse create(CreateOrderRequest req) {
         BigDecimal totalAmount = calculateTotalAmount(req.productQuantity(), req.productId());
         Order order = Order.create(req.customerName(), totalAmount, req.status());
@@ -45,22 +47,26 @@ public class OrderService {
         return OrderResponse.from(savedOrder);
     }
 
+    @Transactional(readOnly = true)
     public List<OrderResponse> findAll() {
         return repository.findAll().stream()
                 .map(OrderResponse::from)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public OrderResponse findById(Long id) {
         return OrderResponse.from(findOrderById(id));
     }
 
+    @Transactional
     public OrderResponse update(Long id, UpdateOrderRequest req) {
         Order existing = findOrderById(id);
         existing.update(req.customerName(), req.totalAmount(), req.status());
         return OrderResponse.from(repository.save(existing));
     }
 
+    @Transactional
     public void delete(Long id) {
         if (!repository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
