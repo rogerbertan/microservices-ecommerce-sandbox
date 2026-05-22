@@ -1,7 +1,6 @@
 package dev.bertan.order_service.service;
 
 import dev.bertan.order_service.client.ProductClient;
-import dev.bertan.order_service.dto.notification.CreateNotificationRequest;
 import dev.bertan.order_service.dto.order.CreateOrderRequest;
 import dev.bertan.order_service.dto.order.OrderCreatedEvent;
 import dev.bertan.order_service.dto.order.OrderResponse;
@@ -40,11 +39,6 @@ public class OrderService {
         Order order = Order.create(req.customerName(), totalAmount, req.status());
         productClient.consume(req.productId(), req.productQuantity());
         Order savedOrder = repository.save(order);
-        CreateNotificationRequest notification = new CreateNotificationRequest(
-                "New order created: " + savedOrder.getId(),
-                "Order",
-                "batatinha@email.com"
-        );
         OrderCreatedEvent orderCreatedEvent = OrderCreatedEvent.from(savedOrder);
         orderEventProducer.sendOrderCreated(orderCreatedEvent);
 
