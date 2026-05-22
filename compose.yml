@@ -23,6 +23,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka_data_ms_ecommerce:/var/lib/kafka/data
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.9.0
@@ -31,5 +33,11 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zookeeper_data_ms_ecommerce:/var/lib/zookeeper/data
+      - zookeeper_log_ms_ecommerce:/var/lib/zookeeper/log
 volumes:
   postgres_data_ms_ecommerce:
+  kafka_data_ms_ecommerce:
+  zookeeper_data_ms_ecommerce:
+  zookeeper_log_ms_ecommerce:
