@@ -2,6 +2,7 @@ package dev.bertan.notification_service.service;
 
 import dev.bertan.notification_service.dto.CreateNotificationRequest;
 import dev.bertan.notification_service.dto.NotificationResponse;
+import dev.bertan.notification_service.dto.OrderCreatedEvent;
 import dev.bertan.notification_service.dto.UpdateNotificationRequest;
 import dev.bertan.notification_service.entity.Notification;
 import dev.bertan.notification_service.repository.NotificationRepository;
@@ -20,7 +21,14 @@ public class NotificationService {
     }
 
     public NotificationResponse create(CreateNotificationRequest req) {
-        return NotificationResponse.from(repository.save(Notification.create(req.message(), req.type(), req.recipient())));
+        return NotificationResponse.from(repository.save(Notification.create(
+                req.message(), req.type(), req.recipient())));
+    }
+
+    public NotificationResponse notifyOrderCreated(OrderCreatedEvent req) {
+        return NotificationResponse.from(repository.save(Notification.create(
+                "Pedido " + req.id() + " com status " + req.status() + " criado em " + req.createdAt(),
+                "ORDER", req.customerName())));
     }
 
     public List<NotificationResponse> findAll() {
