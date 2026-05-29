@@ -4,6 +4,7 @@ import dev.bertan.notification_service.dto.notification.CreateNotificationReques
 import dev.bertan.notification_service.dto.notification.NotificationResponse;
 import dev.bertan.notification_service.dto.order.OrderCreatedEvent;
 import dev.bertan.notification_service.dto.notification.UpdateNotificationRequest;
+import dev.bertan.notification_service.dto.product.LowStockEvent;
 import dev.bertan.notification_service.entity.Notification;
 import dev.bertan.notification_service.entity.ProcessedEvent;
 import dev.bertan.notification_service.repository.NotificationRepository;
@@ -49,6 +50,21 @@ public class NotificationService {
         repository.save(Notification.create(
                 "Pedido " + req.id() + " com status " + req.status() + " criado em " + req.createdAt(),
                 "ORDER", req.customerName()));
+    }
+
+    @Transactional
+    public void notifyLowStock(LowStockEvent req) {
+        UUID eventId = UUID.fromString(req.eventId());
+        try {
+            processedEventRepository.save(new ProcessedEvent(eventId));
+        } catch (DataIntegrityViolationException e) {
+            log.info("Evento {} já processado, ignorando", eventId);
+            return;
+        }
+        repository.save(Notification.create(
+                "Produto " + req.productId() + " está com estoque baixo: "
+                        + req.quantity() + " unidades restantes do limite: " + req.minThreshold() + " unidades",
+                "LOW_STOCK", req.name()));
     }
 
     @Transactional(readOnly = true)

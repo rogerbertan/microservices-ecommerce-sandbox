@@ -24,7 +24,7 @@ public class OrderEventConsumer {
             OrderCreatedEvent event = objectMapper.readValue(payload, OrderCreatedEvent.class);
             notificationService.notifyOrderCreated(event);
         } catch (JacksonException e) {
-            throw new RuntimeException("Failed to parse payload", e);
+            throw new RuntimeException("Failed to parse order created payload", e);
         }
     }
 }
