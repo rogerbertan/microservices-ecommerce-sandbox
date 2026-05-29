@@ -1,8 +1,7 @@
 package dev.bertan.product_service.service;
 
-import dev.bertan.product_service.client.NotificationClient;
-import dev.bertan.product_service.dto.notification.CreateNotificationRequest;
 import dev.bertan.product_service.dto.product.CreateProductRequest;
+import dev.bertan.product_service.dto.product.LowStockEvent;
 import dev.bertan.product_service.dto.product.ProductResponse;
 import dev.bertan.product_service.entity.Product;
 import dev.bertan.product_service.repository.ProductRepository;
@@ -17,12 +16,12 @@ import org.springframework.web.server.ResponseStatusException;
 public class ProductService {
 
     private final ProductRepository repository;
-    private final NotificationClient notificationClient;
+    private final ProductEventProducer productEventProducer;
 
     public ProductService(ProductRepository repository,
-                          NotificationClient notificationClient) {
+                          ProductEventProducer productEventProducer) {
         this.repository = repository;
-        this.notificationClient = notificationClient;
+        this.productEventProducer = productEventProducer;
     }
 
     public ProductResponse create(CreateProductRequest req) {
@@ -45,11 +44,8 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough quantity available");
         }
         if (product.getQuantity() - quantity < product.getMinThreshold()) {
-            CreateNotificationRequest notification = new CreateNotificationRequest(
-                    "Product " + product.getName() + " is below minimum threshold",
-                    "Product",
-                    "abacaxi@email.com");
-            notificationClient.create(notification);
+            LowStockEvent request = LowStockEvent.from(product, quantity);
+            productEventProducer.sendProductLowStock(request);
         }
         product.consumeQuantity(quantity);
         ProductResponse.from(repository.save(product));
